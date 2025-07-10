@@ -1,10 +1,9 @@
-import lightkurve as lk
+from lightkurve import search_targetpixelfile
 
-# Search for Kepler-10 light curve data
-search_result = lk.search_lightcurve('Kepler-10', mission='TESS')
+tpf = search_targetpixelfile('Kepler-10', author='Kepler', cadence='long', quarter=4).download()
+lc = tpf.to_lightcurve(aperture_mask=tpf.pipeline_mask)
 
-# Download the first available light curve
-lc = search_result.download()
-
-# Plot the raw light curve
 lc.plot()
+
+adjusted_lc = lc.flatten()
+adjusted_lc.plot()
